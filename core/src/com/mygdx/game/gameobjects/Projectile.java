@@ -1,6 +1,5 @@
 package com.mygdx.game.gameobjects;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.GameObject;
@@ -22,7 +21,8 @@ public class Projectile extends GameObject {
     public Projectile() {
         super("projectile.png");
         this.speed = 600.0f;
-        this.size = 16.0f;
+        this.width = 16.0f;
+        this.scale = 2;
     }
 
     public void shoot(float x, float y, float angle) {
@@ -38,11 +38,11 @@ public class Projectile extends GameObject {
         y += vy * dt;
         if (x < 0 || x > 1280 || y < 0 || y > 720) {
             deactivate();
+        } else {
         }
     }
 
-    @Override
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x - 8, y - 8, 8, 8, 16, 16, 2, 2, 0, 0, 0, 16, 16, false, false);
+        batch.draw(texture, x - 8, y - 8, 8, 8, 16, 16, scale, scale, 0, 0, 0, 16, 16, false, false);
     }
 }

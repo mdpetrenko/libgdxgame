@@ -14,17 +14,16 @@ public class Tank extends GameObject {
     private float angle;
     private float angleWeapon;
     private Projectile projectile;
-    private float offset;
 
-    public Tank() {
+    public Tank(MyGdxGame game) {
         super("tank.png");
         this.textureWeapon = new Texture("weapon.png");
         this.projectile = new Projectile();
         this.speed = 240.0f;
         this.scale = 3.0f;
-        this.offset = scale * 20;
-        this.x = offset;
-        this.y = offset;
+        this.width = 40;
+        this.x = 60;
+        this.y = 60;
     }
 
     public void update(float dt) {
@@ -37,13 +36,21 @@ public class Tank extends GameObject {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                 angle += df;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && isPositionValid(x + dx, y + dy)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 x += dx;
                 y += dy;
+                if (invalidPosition(x, y)) {
+                    x -= dx;
+                    y -= dy;
+                }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && isPositionValid(x - dx, y - dy)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 x -= dx * 0.2f;
                 y -= dy * 0.2f;
+                if (invalidPosition(x, y)) {
+                    x += dx * 0.2f;
+                    y += dy * 0.2f;
+                }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             angleWeapon += 90.0f * dt;
@@ -59,15 +66,10 @@ public class Tank extends GameObject {
         }
     }
 
-    private boolean isPositionValid(float x, float y) {
-        return x >= offset && y >= offset && x <= 1280 - offset && y <= 720 - offset;
-    }
-
     public Projectile getProjectile() {
         return projectile;
     }
 
-    @Override
     public void render(SpriteBatch batch) {
         batch.draw(texture, x - 20, y - 20, 20, 20, 40, 40, scale, scale, angle, 0, 0, 40, 40, false, false);
         batch.draw(textureWeapon, x - 20, y - 20, 20, 20, 40, 40, scale, scale, angle + angleWeapon, 0, 0, 40, 40, false, false);
@@ -80,5 +82,10 @@ public class Tank extends GameObject {
     public void dispose() {
         super.dispose();
         projectile.dispose();
+    }
+
+    private boolean invalidPosition(float x, float y) {
+        return x < 60 || y < 60 || x > 1220 || y > 660
+                || MyGdxGame.isIntersect(this, MyGdxGame.getBlock());
     }
 }

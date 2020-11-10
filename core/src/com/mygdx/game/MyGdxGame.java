@@ -8,13 +8,12 @@ import com.mygdx.game.gameobjects.Block;
 import com.mygdx.game.gameobjects.Projectile;
 import com.mygdx.game.gameobjects.Tank;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyGdxGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private Tank tank;
-    private List<Block> blocks;
+    private static Block block;
 
     // Домашнее задание:
     // 1. Не дайте танку уехать за пределы экрана
@@ -23,9 +22,8 @@ public class MyGdxGame extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        tank = new Tank();
-        blocks = new ArrayList<>();
-        blocks.add(new Block());
+        tank = new Tank(this);
+        block = new Block();
     }
 
     @Override
@@ -36,38 +34,37 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         tank.render(batch);
-        for (Block block : blocks) {
-            if (!block.isActive()) {
-                block.activate();
-            }
-            block.render(batch);
+        if (!block.isActive() || isIntersect(block, tank)) {
+            block.activate();
         }
+        block.render(batch);
         batch.end();
     }
 
     public void update(float dt) {
         tank.update(dt);
         Projectile projectile = tank.getProjectile();
-        for (Block block : blocks) {
-            if (block.isActive() && isIntersect(block, projectile)) {
-                block.deactivate();
-                projectile.deactivate();
-            }
+        if (block.isActive() && isIntersect(block, projectile)) {
+            block.deactivate();
+            projectile.deactivate();
         }
     }
 
     // Для простоты расчета в данной задаче все объекты считаем окружностями
     // Сравниваем расстояние между центрами с суммой радиусов двух объектов
     public static boolean isIntersect(GameObject o1, GameObject o2) {
-        return Math.sqrt((o1.getX() - o2.getX()) * (o1.getX() - o2.getX()) + (o1.getY() - o2.getY()) * (o1.getY() - o2.getY())) < (o1.size + o2.size) / 2;
+        return Math.sqrt((o1.getX() - o2.getX()) * (o1.getX() - o2.getX())
+                + (o1.getY() - o2.getY()) * (o1.getY() - o2.getY())) < (o1.size + o2.size) / 2;
+    }
+
+    public static Block getBlock() {
+        return block;
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         tank.dispose();
-        for (Block block : blocks) {
-            block.dispose();
-        }
+        block.dispose();
     }
 }

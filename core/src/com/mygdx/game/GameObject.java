@@ -8,16 +8,12 @@ public abstract class GameObject {
     protected float x;
     protected float y;
     protected float width;
-    protected float height;
     protected float scale;
     protected float size;
 
     public GameObject(String texture) {
         this.texture = new Texture(texture);
-    }
-
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y, size, size);
+        this.size = width * scale;
     }
 
     public void dispose() {
@@ -25,11 +21,10 @@ public abstract class GameObject {
     }
 
     public float getX() {
-        return x + size / 2;
+        return x;
     }
 
     public float getY() {
-        return y + size / 2;
+        return y;
     }
-
 }
