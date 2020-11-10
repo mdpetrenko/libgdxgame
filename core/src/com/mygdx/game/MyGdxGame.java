@@ -3,12 +3,17 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.gameobjects.Block;
+import com.mygdx.game.gameobjects.Tank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyGdxGame extends ApplicationAdapter {
     private SpriteBatch batch;
     private Tank tank;
+    private List<Block> blocks;
 
     // Домашнее задание:
     // 1. Не дайте танку уехать за пределы экрана
@@ -18,6 +23,8 @@ public class MyGdxGame extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         tank = new Tank();
+        blocks = new ArrayList<>();
+        blocks.add(new Block());
     }
 
     @Override
@@ -28,6 +35,9 @@ public class MyGdxGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         tank.render(batch);
+        for (Block block : blocks) {
+            block.render(batch);
+        }
         batch.end();
     }
 
@@ -43,5 +53,8 @@ public class MyGdxGame extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         tank.dispose();
+        for (Block block : blocks) {
+            block.dispose();
+        }
     }
 }

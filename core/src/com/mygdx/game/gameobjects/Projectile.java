@@ -1,13 +1,11 @@
-package com.mygdx.game;
+package com.mygdx.game.gameobjects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.game.GameObject;
 
-public class Projectile {
-    private Texture texture;
-    private float x;
-    private float y;
+public class Projectile extends GameObject {
     private float vx;
     private float vy;
     private float speed;
@@ -22,7 +20,7 @@ public class Projectile {
     }
 
     public Projectile() {
-        this.texture = new Texture("projectile.png");
+        super("projectile.png");
         this.speed = 600.0f;
     }
 
@@ -42,11 +40,8 @@ public class Projectile {
         }
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         batch.draw(texture, x - 8, y - 8, 8, 8, 16, 16, 2, 2, 0, 0, 0, 16, 16, false, false);
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 }
