@@ -22,6 +22,7 @@ public class Projectile extends GameObject {
     public Projectile() {
         super("projectile.png");
         this.speed = 600.0f;
+        this.size = 16.0f;
     }
 
     public void shoot(float x, float y, float angle) {

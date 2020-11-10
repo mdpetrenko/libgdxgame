@@ -10,25 +10,26 @@ public abstract class GameObject {
     protected float width;
     protected float height;
     protected float scale;
-    protected float sizeX;
-    protected float sizeY;
+    protected float size;
 
     public GameObject(String texture) {
         this.texture = new Texture(texture);
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, x, y, sizeX, sizeY);
+        batch.draw(texture, x, y, size, size);
     }
 
     public void dispose() {
         texture.dispose();
     }
 
-    public boolean isIntersect(GameObject o) {
-        return this.x <= o.x + o.sizeX
-                && this.x + this.sizeX >= o.x
-                && this.y <= o.y + o.sizeY
-                && this.y + this.sizeY >= o.y;
+    public float getX() {
+        return x + size / 2;
     }
+
+    public float getY() {
+        return y + size / 2;
+    }
+
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.gameobjects.Block;
+import com.mygdx.game.gameobjects.Projectile;
 import com.mygdx.game.gameobjects.Tank;
 
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         tank.render(batch);
         for (Block block : blocks) {
+            if (!block.isActive()) {
+                block.activate();
+            }
             block.render(batch);
         }
         batch.end();
@@ -43,10 +47,19 @@ public class MyGdxGame extends ApplicationAdapter {
 
     public void update(float dt) {
         tank.update(dt);
-//        if (Gdx.input.justTouched()) {
-//            System.out.println(Gdx.input.getX());
-//            System.out.println(Gdx.graphics.getHeight() - Gdx.input.getY());
-//        }
+        Projectile projectile = tank.getProjectile();
+        for (Block block : blocks) {
+            if (block.isActive() && isIntersect(block, projectile)) {
+                block.deactivate();
+                projectile.deactivate();
+            }
+        }
+    }
+
+    // Для простоты расчета в данной задаче все объекты считаем окружностями
+    // Сравниваем расстояние между центрами с суммой радиусов двух объектов
+    public static boolean isIntersect(GameObject o1, GameObject o2) {
+        return Math.sqrt((o1.getX() - o2.getX()) * (o1.getX() - o2.getX()) + (o1.getY() - o2.getY()) * (o1.getY() - o2.getY())) < (o1.size + o2.size) / 2;
     }
 
     @Override

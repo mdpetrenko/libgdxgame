@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.GameObject;
+import com.mygdx.game.MyGdxGame;
 
 public class Tank extends GameObject {
     private Texture textureWeapon;
@@ -60,6 +61,10 @@ public class Tank extends GameObject {
 
     private boolean isPositionValid(float x, float y) {
         return x >= offset && y >= offset && x <= 1280 - offset && y <= 720 - offset;
+    }
+
+    public Projectile getProjectile() {
+        return projectile;
     }
 
     @Override
