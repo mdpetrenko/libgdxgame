@@ -22,7 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        tank = new Tank(this);
+        tank = new Tank();
         block = new Block();
     }
 

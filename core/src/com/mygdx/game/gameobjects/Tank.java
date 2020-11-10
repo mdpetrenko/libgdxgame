@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.GameObject;
-import com.mygdx.game.MyGdxGame;
 
 public class Tank extends GameObject {
     private Texture textureWeapon;
@@ -15,7 +14,7 @@ public class Tank extends GameObject {
     private float angleWeapon;
     private Projectile projectile;
 
-    public Tank(MyGdxGame game) {
+    public Tank() {
         super("tank.png");
         this.textureWeapon = new Texture("weapon.png");
         this.projectile = new Projectile();
@@ -36,21 +35,13 @@ public class Tank extends GameObject {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                 angle += df;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && positionIsValid(x + dx, y + dy)) {
                 x += dx;
                 y += dy;
-                if (invalidPosition(x, y)) {
-                    x -= dx;
-                    y -= dy;
-                }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && positionIsValid(x + dx, y + dy)) {
                 x -= dx * 0.2f;
                 y -= dy * 0.2f;
-                if (invalidPosition(x, y)) {
-                    x += dx * 0.2f;
-                    y += dy * 0.2f;
-                }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
             angleWeapon += 90.0f * dt;
@@ -84,8 +75,7 @@ public class Tank extends GameObject {
         projectile.dispose();
     }
 
-    private boolean invalidPosition(float x, float y) {
-        return x < 60 || y < 60 || x > 1220 || y > 660
-                || MyGdxGame.isIntersect(this, MyGdxGame.getBlock());
+    private boolean positionIsValid(float x, float y) {
+        return !(x < 60) && !(y < 60) && !(x > 1220) && !(y > 660);
     }
 }
